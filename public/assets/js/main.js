@@ -242,10 +242,10 @@
 			var newVal = parseFloat(oldValue) + 1;
 		} else {
 			// Don't allow decrementing below zero
-			if (oldValue > 0) {
+			if (oldValue > 1) {
 				var newVal = parseFloat(oldValue) - 1;
 			} else {
-				newVal = 0;
+				newVal = 1;
 			}
 		}
 		$button.parent().find('input').val(newVal);
@@ -286,10 +286,12 @@
 
 		const search = path.split("?search=")[1]
 		const idCategoria = path.split("?idCategoria=")[1]
-		//proviende de helper.js
+		
 		listadoProductos(search, idCategoria)
 	}
 
+	let productos = JSON.parse(localStorage.getItem("productos")) || []
+	dibujarCarrito(productos)
 	listadoCategorias()
 
 }(jQuery));

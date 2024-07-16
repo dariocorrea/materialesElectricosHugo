@@ -85,7 +85,7 @@ const llenarGrillaProductos = async () => {
   	paginacion.innerHTML = ''
 
 	if (resultados.length == 0) {
-		listaHTML.innerHTML = '<h1 style="color:#F4CE14; text-align: center; margin: 0 auto; width: 50%;">"No se encontraron resultados"</h1>';
+		listaHTML.innerHTML = '<h1 style="color:#3F51B5; text-align: center; margin: 0 auto; width: 50%;">No se encontraron resultados</h1>';
 
 	} else {
 		const paginasTotales = await obtenerPaginasTotales()
@@ -261,8 +261,10 @@ const buscarProducto = async (idProducto) => {
 
 const detalleProductoModal = async (idProducto) => {
 	let imagenProducto = document.getElementById("imagenProductoModal")
+	let nombreImagen = document.getElementById("nombreImagenModal")
 	let nombreProducto = document.getElementById("nombreProductoModal")
 	let codigoProducto = document.getElementById("codigoProductoModal")
+	let idProd = document.getElementById("idProductoModal")
 	let marcaProducto = document.getElementById("marcaProductoModal")
 	let stockProducto = document.getElementById("stockProductoModal")
 	let precioProducto = document.getElementById("precioProductoModal")
@@ -272,6 +274,8 @@ const detalleProductoModal = async (idProducto) => {
 	const producto = lProductos[0]
 
 	imagenProducto.src = `assets/uploads/${producto.Imagen}`
+	nombreImagen.innerHTML = producto.Imagen
+	idProd.innerHTML = idProducto
 	nombreProducto.innerHTML = producto.NombreProducto
 	codigoProducto.innerHTML = `Código Producto: ${producto.IdProducto}`
 	marcaProducto.innerHTML = producto.NombreMarca
@@ -280,20 +284,92 @@ const detalleProductoModal = async (idProducto) => {
 	descripcionProducto.innerHTML = producto.DescripcionProducto
 }
 
+const vaciarCarrito = async () => {
+	localStorage.removeItem("productos")
+
+	dibujarCarrito([])
+}
+
+const eliminarProducto = async (idProducto) => {
+	let productos = JSON.parse(localStorage.getItem("productos")) || []
+	
+	productos = productos.filter(p => p.Id != idProducto)
+
+	vaciarCarrito()
+
+	localStorage.setItem("productos", JSON.stringify(productos))
+
+	dibujarCarrito(productos)
+}
+
 const dibujarCarrito = async (productos) => {
-	let productosAgrupados = productos
+	let listaCarritoHTML = document.querySelector(`#listaCarrito`)
+	let precioTotalCar = document.getElementById("precioTotalCar")
+	let notificacionCar = document.getElementById("notificacionCar")
+	let total = 0
+	
+	listaCarritoHTML.innerHTML = ''
+	
+	productos.forEach((producto, i) => {
+		total += producto.Cantidad * producto.Precio
+		listaCarritoHTML.innerHTML += ` 
+			<li>
+				<div class="cart-img">
+					<img src="assets/uploads/${producto.Imagen}" alt="${producto.Imagen}">
+				</div>
+				<div class="cart-info">
+					<h4>${producto.Nombre}</h4>
+					<span>${producto.Cantidad} x $${producto.Precio}</span>
+				</div>
+				<div class="del-icon">
+					<a href="index.html" onclick=eliminarProducto(${producto.Id})><i class="fa fa-times"></i></a>
+				</div>
+			</li>
+		`
+	})
+	notificacionCar.innerHTML = productos.length
+	precioTotalCar.innerHTML = `<span>total</span> $${total.toFixed(2)}`
+	listaCarritoHTML.innerHTML += `
+		<li class="mini-cart-price">
+			<span class="subtotal">Total : </span>
+			<span class="subtotal-price">$${total.toFixed(2)}</span>
+		</li>
+		<li class="checkout-btn">
+			<a href="carrito.html">Ir al Carrito</a>
+		</li>
+	` 
 }
 
 const agregarAlCarrito = async () => {
-	let imagenProducto = document.getElementById("imagenProductoModal")
+	let idProducto = document.getElementById("idProductoModal")
+	let imagenProducto = document.getElementById("nombreImagenModal")
 	let nombreProducto = document.getElementById("nombreProductoModal")
-	let codigoProducto = document.getElementById("codigoProductoModal")
+	let precioProducto = document.getElementById("precioProductoModal")
+	let cantidad = document.getElementById("cantidadModal")
 
-	let producto = {"Id": codigoProducto.textContent, "Nombre": nombreProducto.textContent, "Imagen": imagenProducto.src}
+	let producto = {"Id": parseInt(idProducto.textContent),
+		"Nombre": nombreProducto.textContent, 
+		"Imagen": imagenProducto.textContent,
+		"Precio": parseFloat(precioProducto.textContent.split("$")[1]),
+		"Cantidad": parseInt(cantidad.value) }
+
 	let productos = JSON.parse(localStorage.getItem("productos")) || []
+	
+	let prodExiste = productos.find(p => p.Id == idProducto.textContent)
+	
+	//Si existe le actualizo la cantidad, y lo elimino para volverlo a insertar
+	if (prodExiste) {
+		productos = productos.filter(p => p.Id != idProducto.textContent)
+		producto.Cantidad = prodExiste.Cantidad + producto.Cantidad
+	}
+
 	productos.push(producto)
 
 	localStorage.setItem("productos", JSON.stringify(productos))
 
-	//dibujarCarrito(productos)
+	dibujarCarrito(productos)
+
+	cantidad.value = "1"
+	const btnClose = document.getElementById("modalClose")
+	btnClose.click()
 }
