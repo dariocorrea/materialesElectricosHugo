@@ -19,8 +19,8 @@ const controladores = require('../controllers/mainControllerProducto');
 //Esta ruta se usa desde productos.html
 router.get('/listaProductos/:id', controladores.getListaProductos);
 router.get('/detalleProducto/:id', controladores.getDetalleProducto);
-//router.get('/listaVariedades/:id', controladores.getListaVariedades);
-//router.get('/busquedaProductos', controladores.busquedaProductos);
+router.get('/busquedaProductos', controladores.busquedaProductos);
+router.get('/listadoCategorias/:id', controladores.getListaCategorias);
 router.get('/producto', controladores.getProducto);
 router.get('/bienvenido', (req, res) => {
 res.render('bienvenido'); // Renderiza el archivo bienvenido.ejs

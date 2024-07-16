@@ -22,14 +22,15 @@ module.exports = {
         }
     },
 
-    getListaVariedades: async (req, res) => {
+    getListaCategorias: async (req, res) => {
         try {
-            const variedad_id = req.params.id
+            const idCategoria = req.params.id
 
-            const [variedades] = await conn.query(`SELECT * FROM variedad  
-                                                    WHERE id = ${variedad_id} `);
+            const [categorias] = await conn.query(`SELECT * FROM categoriaproducto  
+                                                    WHERE (IdCategoria = ${idCategoria} 
+                                                      OR ${idCategoria} = 0) `);
 
-            res.json(variedades);
+            res.json(categorias);
         } catch (error) {
             throw error;
         } finally {
@@ -39,14 +40,17 @@ module.exports = {
 
     getDetalleProducto: async (req, res) => {
         try {
-            const idProd = req.params.id
+            const idProducto = req.params.id
+            console.log(idProducto) 
+            const [productos] = await conn.query(`SELECT p.*, c.NombreCategoria, m.NombreMarca 
+                                                    FROM producto p 
+                                                    JOIN categoriaproducto c 
+                                                      ON p.IdCategoria = c.IdCategoria 
+                                                    JOIN marca m 
+                                                      ON p.IdMarca = m.IdMarca
+                                                   WHERE p.IdProducto = ${idProducto} `);
 
-            const [registro] = await conn.query(`SELECT p.*, v.nombre AS nombre_variedad 
-                                                   FROM producto p 
-                                                   JOIN variedad v ON p.variedad_id = v.id
-                                                  WHERE p.id = ${idProd} `);
-
-            res.render('detalleproducto', { producto: registro[0], tituloDePagina: 'Detalle de Producto' });
+            res.json(productos);
         } catch (error) {
             throw error;
         } finally {
@@ -59,13 +63,15 @@ module.exports = {
             console.log(req.query.search)
             const search = req.query.search
 
-            const [registros] = await conn.query(`SELECT p.*, SUBSTRING(caracteristicas,1,100) AS descripcion,
-                                                         v.nombre AS nombre_variedad 
+            const [productos] = await conn.query(`SELECT p.*, c.NombreCategoria, m.NombreMarca 
                                                     FROM producto p 
-                                                    JOIN variedad v ON p.variedad_id = v.id
-                                                   WHERE p.nombre LIKE '%${search}%' `);
+                                                    JOIN categoriaproducto c 
+                                                      ON p.IdCategoria = c.IdCategoria 
+                                                    JOIN marca m 
+                                                      ON p.IdMarca = m.IdMarca
+                                                   WHERE p.NombreProducto LIKE '%${search}%' `);
 
-            res.json(registros);
+            res.json(productos);
 
         } catch (error) {
             throw error;

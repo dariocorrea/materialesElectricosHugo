@@ -278,161 +278,19 @@
 		}, 1000);
 	});
 
+	const pathActual = window.location.pathname;
 
+	//solo se llama desde index.html
+	if (pathActual == '/' || pathActual.includes('/index.html')) {
+		const path = window.location.href
 
-const buscarListado = async () => {
-	const token = localStorage.getItem('jwt-token')
-  
-	const res = await fetch(`/listaProductos/0`, {
-	  method: 'GET',
-	  headers: {
-		"Content-Type": "application/json",
-		"Authorization": `Bearer ${token}`
-  
-	  }
-	})
-  
-	if (!res.ok) {
-	  window.location.href = "/login.html"
-  
-	  throw Error("Problemas en login")
+		const search = path.split("?search=")[1]
+		const idCategoria = path.split("?idCategoria=")[1]
+		//proviende de helper.js
+		listadoProductos(search, idCategoria)
 	}
-  
-	const data = await res.json()
-  
-	return data
-}
 
-const listadoProductos = async () => {
-	let resultados
-	let search = window.location.href.split("search=")[1]
-  
-	if (search != null) {
-	  resultados = await busquedaProductos(search)
-	}
-	else {
-	  resultados = await buscarListado()
-	}
-  
-	let listaHTML = document.querySelector(`#listado`)
-	listaHTML.innerHTML = ''
-  
-	if (resultados.length == 0) {
-	  listaHTML.innerHTML = '<h1 style="color:#F4CE14; text-align: center; margin: 0 auto; width: 50%;">"No se encontraron resultados"</h1>';
-  
-	} else {
-		resultados = resultados.concat(resultados)
-		resultados = resultados.concat(resultados)
-
-		let mostrarCantidad = document.querySelector(`#cantProductos`)
-		let cantidad = resultados.length
-
-		mostrarCantidad.innerHTML = `Mostrando 1-16 de ${cantidad} resultados`
-
-		resultados.forEach((producto, i) => {
-			listaHTML.innerHTML += ` 
-				<div class="col-lg-3 col-md-4 col-sm-6">
-					<div class="product-item fix mb-30">
-						<div class="product-thumb">
-							<a href="product-details.html">
-								<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
-							</a>
-							<div class="product-action-link">                                                
-								<a href="" onclick="detalleProducto()" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Ver"><i class="fa fa-search"></i></span> </a>
-							</div>
-						</div>
-						<div class="product-content">
-							<h4><a href="product-details.html">${producto.NombreProducto}</a></h4>
-							<h3><a href="product-details.html">${producto.NombreMarca}</a></h3>
-							<h4></h4>
-							<div class="pricebox">
-								<span class="regular-price">$${producto.PrecioVenta}</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-list-item mb-30">
-						<div class="product-thumb">
-							<a href="product-details.html">
-								<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
-							</a>
-						</div>
-						<div class="product-list-content">
-							<h3><a href="product-details.html">${producto.NombreProducto}</a></h3>
-							<h4><a href="product-details.html">${producto.NombreMarca}</a></h4>
-							<div class="pricebox">
-								<span class="regular-price">$${producto.PrecioVenta}</span>
-							</div>
-							<p>${producto.DescripcionProducto}</p>						
-							<div class="product-list-action-link">
-								<a href="#" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="top" title="Ver"><i class="fa fa-search"></i></span> </a>
-							</div>
-						</div>
-					</div>
-				</div>
-			`;
-	  	});
-	}
-}
-  
-listadoProductos()
+	listadoCategorias()
 
 }(jQuery));
-
-const detalleProducto = async () => {
-	let modal = document.getElementById("quick_view") //$("#quick_view")//document.getElementById("quick_view")	
-	// modal.innerHTML =   `
-    //     <div class="modal-dialog modal-lg modal-dialog-centered">
-    //         <div class="modal-content">
-    //             <div class="modal-header">
-    //                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-    //             </div>
-    //             <div class="modal-body">
-    //                 <!-- product details inner end -->
-    //                 <div class="product-details-inner">
-    //                     <div class="row">
-    //                         <div class="col-lg-5">
-    //                             <div class="product-large-slider slick-arrow-style_2 mb-20">
-    //                                 <div class="pro-large-img">
-    //                                     <img src="assets/img/product/product-details-img1.jpg" alt="" />
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                         <div class="col-lg-7">
-    //                             <div class="product-details-des mt-md-34 mt-sm-34">
-    //                                 <h3><a href="product-details.html">external product 12</a></h3>
-    //                                 <div class="ratings">
-    //                                     <span class="good"><i class="fa fa-star"></i></span>
-    //                                     <span class="good"><i class="fa fa-star"></i></span>
-    //                                     <span class="good"><i class="fa fa-star"></i></span>
-    //                                     <span class="good"><i class="fa fa-star"></i></span>
-    //                                     <span><i class="fa fa-star"></i></span>
-    //                                     <div class="pro-review">
-    //                                         <span>1 review(s)</span>
-    //                                     </div>
-    //                                 </div>
-    //                                 <div class="availability mt-10">
-    //                                     <h5>Availability:</h5>
-    //                                     <span>1 in stock</span>
-    //                                 </div>
-    //                                 <div class="pricebox">
-    //                                     <span class="regular-price">$160.00</span>
-    //                                 </div>
-    //                                 <p>Lssdfsgfgg gdfgsdfg</p>
-    //                                 <div class="quantity-cart-box d-flex align-items-center mt-20">
-    //                                     <div class="quantity">
-    //                                         <div class="pro-qty"><input type="text" value="1"></div>
-    //                                     </div>
-    //                                     <div class="action_link">
-    //                                         <a class="buy-btn" href="#">add to cart<i class="fa fa-shopping-cart"></i> </a>
-    //                                     </div>
-    //                                 </div>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-	// `
-}
 

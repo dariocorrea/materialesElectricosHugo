@@ -1,9 +1,9 @@
 /* ***SERVER ESTÁTICO CON EXPRESS (Módulo Externo)*** */
 const express = require('express')
 const override = require('method-override')
-//const rutas = require('./src/routes/mainRoutesProducto.js')
-//const rutasAuth = require('./src/routes/mainRoutesProductoAuth.js')
-//const login = require('./src/routes/loginRoutes.js')
+const rutas = require('./src/routes/mainRoutesProducto.js')
+const rutasAuth = require('./src/routes/mainRoutesProductoAuth.js')
+const login = require('./src/routes/loginRoutes.js')
 const path = require('path')
 //const rutasAdmin = require('./src/routes/adminRoutes.js')
 const app = express()
@@ -19,8 +19,8 @@ app.use(express.static(__dirname + '/public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
-//app.use('/login', login)
-//app.use('/', rutas)
+app.use('/login', login)
+app.use('/', rutas)
 //app.use('/', auth, rutasAuth) //para que requira el token
 
 app.use((req, res, next) => {

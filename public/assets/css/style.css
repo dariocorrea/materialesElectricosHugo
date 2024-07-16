@@ -3826,6 +3826,7 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     font-weight: 700;
     border-bottom: 2px solid #444444;
     padding-bottom: 12px;
+    color: #007bff
 }
 
 .product-item:hover .img-sec {
@@ -4015,6 +4016,12 @@ only screen and (min-width: 768px) and (max-width: 991px) {
     color: #d8373e;
 }
 
+.product-list-item .product-list-content h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #007bff
+}
+
 .product-list-item .product-list-content .pricebox {
     padding-top: 10px;
     margin-top: 10px;
@@ -4062,11 +4069,11 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 }
 
 .product-list-item .product-list-content .product-list-action-link a:nth-child(even) {
-    background-color: #444444;
+    background-color: #3F51B5;
 }
 
 .product-list-item .product-list-content .product-list-action-link a.buy-btn {
-    width: 130px;
+    width: 200px;
     text-transform: capitalize;
 }
 
@@ -4753,7 +4760,8 @@ only screen and (max-width: 767px) {
 }
 
 .pro-large-img img {
-    width: 100%;
+    height: 300px;
+    margin: auto;
     border: 1px solid #e5e5e5;
 }
 
@@ -4794,11 +4802,17 @@ only screen and (max-width: 767px) {
     color: #d8373e;
 }
 
+.product-details-des h5 {
+    color: #007bff;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
 .product-details-des h6 {
     font-size: 14px;
     font-weight: 400;
     line-height: 16px;
-    padding: 10px 0;
+    margin-bottom: 10px;
     text-transform: capitalize;
 }
 
@@ -4836,7 +4850,7 @@ only screen and (max-width: 767px) {
 .product-details-des .action_link a.buy-btn {
     color: #ffffff;
     height: 40px;
-    width: 150px;
+    width: 200px;
     font-weight: 600;
     line-height: 40px;
     display: inline-block;
@@ -6631,23 +6645,27 @@ only screen and (min-width: 768px) and (max-width: 991px) {
 
 /*------ contact info area end -------*/
 #map_content {
-    height: 500px;
+    width: 600px;
+    height: 450px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     #map_content {
+        width: 500px;
         height: 400px;
     }
 }
 
 @media only screen and (max-width: 767px) {
     #map_content {
+        width: auto;
         height: 300px;
     }
 }
 
 @media only screen and (max-width: 575px) {
     #map_content {
+        width: auto;
         height: 200px;
     }
 }
@@ -7127,6 +7145,10 @@ only screen and (min-width: 768px) and (max-width: 991px) {
         width: 100%;
         margin-top: 10px;
     }
+}
+
+.social-icons {
+    font-size: 20px;
 }
 
 .footer-top-wrapper .social-icons {
