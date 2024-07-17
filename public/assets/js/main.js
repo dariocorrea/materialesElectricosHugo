@@ -238,21 +238,35 @@
 	proQty.on('click', '.qtybtn', function () {
 		var $button = $(this);
 		var oldValue = $button.parent().find('input').val();
-		if ($button.hasClass('inc')) {
-			var newVal = parseFloat(oldValue) + 1;
-		} else {
-			// Don't allow decrementing below zero
-			if (oldValue > 1) {
-				var newVal = parseFloat(oldValue) - 1;
+
+		let stockDisp = $(this).parents().children("span#stockDisponible")[0].textContent
+
+		if (stockDisp != "0")
+		{
+			if ($button.hasClass('inc')) {
+				var newVal
+				let stock = parseInt(stockDisp)
+				
+				if (stock == parseFloat(oldValue)) {
+					newVal = parseFloat(oldValue);
+				} 
+				else{
+					newVal = parseFloat(oldValue) + 1;
+				}
 			} else {
-				newVal = 1;
+				// Don't allow decrementing below zero
+				if (oldValue > 1) {
+					var newVal = parseFloat(oldValue) - 1;
+				} else {
+					newVal = 1;
+				}
 			}
+			$button.parent().find('input').val(newVal);
 		}
-		$button.parent().find('input').val(newVal);
 	});
 
 	// nice select active js
-	$('select').niceSelect();
+	//$('select').niceSelect();
 
 	// modal fix
 	$('.modal').on('shown.bs.modal', function (e) {

@@ -80,6 +80,27 @@ module.exports = {
         }
     },
 
+    actualizarStock: async (req, res) => {
+        try {
+            console.log(req.body);
+            const sql = `UPDATE producto SET Stock=? WHERE IdProducto=?`;
+            const { idProducto, stockNuevo} = req.body;
+
+            const modificado = await conn.query(sql, [stockNuevo, idProducto]);
+            console.log('Producto actualizado exitosamente');
+
+            //res.redirect('/producto');
+            res.status(200)
+        } catch (error) {
+            console.error('Error al actualizar el stock:', error);
+            res.status(500).send({ message: "Error al actualizar el stock. Por favor, inténtalo de nuevo." })
+        }
+    },
+
+
+
+
+
     getProducto: async (req, res) => {
         try {
             const [registros] = await conn.query(`SELECT p.*, v.nombre AS nombre_variedad

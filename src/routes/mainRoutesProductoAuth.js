@@ -17,12 +17,13 @@ const controladores = require('../controllers/mainControllerProducto');
 
 // const uploadFile = multer({ storage })
 
-
-//Esta ruta se usa desde productos.html
-//router.get('/listaProductos/:id', controladores.getListaProductos);
-//router.get('/detalleProducto/:id', controladores.getDetalleProducto);
-router.get('/listadoCategorias/:id', controladores.getListaCategorias);
+router.get('/listaProductos/:id', controladores.getListaProductos);
+router.get('/detalleProducto/:id', controladores.getDetalleProducto);
 router.get('/busquedaProductos', controladores.busquedaProductos);
+router.get('/listadoCategorias/:id', controladores.getListaCategorias);
+
+router.put('/actualizarStock', controladores.actualizarStock)
+
 //router.get('/producto', controladores.getProducto);
 //router.post('/producto', uploadFile.single('imagen'), controladores.crearRegistro);//ejecuta multer
 router.post('/contactar', controladores.contactar);

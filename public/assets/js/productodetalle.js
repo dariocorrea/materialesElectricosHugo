@@ -13,9 +13,9 @@ const detalleProducto = async (idProducto) => {
 
 	imagenProducto.src = `assets/uploads/${producto.Imagen}`
 	nombreProducto.innerHTML = producto.NombreProducto
-	codigoProducto.innerHTML =  `Código Producto: ${producto.IdProducto}`
+	codigoProducto.innerHTML =  `Código Producto: ${producto.CodigoProducto}`
 	marcaProducto.innerHTML = producto.NombreMarca
-	stockProducto.innerHTML = `${producto.PrecioCompra} en Stock`
+	stockProducto.innerHTML = `${producto.Stock} en Stock`
 	precioProducto.innerHTML = `$${producto.PrecioVenta}`
 	descripcionProducto.innerHTML = producto.DescripcionProducto
 }

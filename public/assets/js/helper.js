@@ -234,7 +234,8 @@ const listadoProductos = async (search, idCategoria) => {
 	resultados.splice(29)
 	cantTotalProductos = resultados.length
 
-	await llenarGrillaProductos();
+	await ordenarListaProductos()
+	await llenarGrillaProductos()
 }
 
 const buscarProducto = async (idProducto) => {
@@ -260,6 +261,7 @@ const buscarProducto = async (idProducto) => {
 }
 
 const detalleProductoModal = async (idProducto) => {
+	let cantidad = document.getElementById("cantidadModal")	
 	let imagenProducto = document.getElementById("imagenProductoModal")
 	let nombreImagen = document.getElementById("nombreImagenModal")
 	let nombreProducto = document.getElementById("nombreProductoModal")
@@ -267,19 +269,34 @@ const detalleProductoModal = async (idProducto) => {
 	let idProd = document.getElementById("idProductoModal")
 	let marcaProducto = document.getElementById("marcaProductoModal")
 	let stockProducto = document.getElementById("stockProductoModal")
+	let stockDisponible = document.getElementById("stockDisponible")
 	let precioProducto = document.getElementById("precioProductoModal")
 	let descripcionProducto = document.getElementById("descripcionProductoModal")
+	let btnAgregar = document.getElementById("btnAgregar")	
 
 	const lProductos = await buscarProducto(idProducto)
 	const producto = lProductos[0]
+
+	if (producto.Stock == 0){
+			cantidad.value = "0"
+			stockProducto.innerHTML = `Sin Stock`
+			stockDisponible.textContent = "0"
+			btnAgregar.setAttribute("hidden", true)
+	}
+	else {
+		cantidad.value = "1"
+		stockProducto.innerHTML = `${producto.Stock} en Stock`
+		stockDisponible.textContent = producto.Stock
+		btnAgregar.removeAttribute("hidden")
+	}
 
 	imagenProducto.src = `assets/uploads/${producto.Imagen}`
 	nombreImagen.innerHTML = producto.Imagen
 	idProd.innerHTML = idProducto
 	nombreProducto.innerHTML = producto.NombreProducto
-	codigoProducto.innerHTML = `Código Producto: ${producto.IdProducto}`
+	codigoProducto.innerHTML = `Código Producto: ${producto.CodigoProducto}`
 	marcaProducto.innerHTML = producto.NombreMarca
-	stockProducto.innerHTML = `${producto.PrecioCompra} en Stock`
+
 	precioProducto.innerHTML = `$${producto.PrecioVenta}`
 	descripcionProducto.innerHTML = producto.DescripcionProducto
 }
@@ -345,13 +362,15 @@ const agregarAlCarrito = async () => {
 	let imagenProducto = document.getElementById("nombreImagenModal")
 	let nombreProducto = document.getElementById("nombreProductoModal")
 	let precioProducto = document.getElementById("precioProductoModal")
+	let stockDisponible = document.getElementById("stockDisponible")
 	let cantidad = document.getElementById("cantidadModal")
 
 	let producto = {"Id": parseInt(idProducto.textContent),
 		"Nombre": nombreProducto.textContent, 
 		"Imagen": imagenProducto.textContent,
 		"Precio": parseFloat(precioProducto.textContent.split("$")[1]),
-		"Cantidad": parseInt(cantidad.value) }
+		"Cantidad": parseInt(cantidad.value),
+		"Stock" : parseInt(stockDisponible.textContent)}
 
 	let productos = JSON.parse(localStorage.getItem("productos")) || []
 	
@@ -359,6 +378,12 @@ const agregarAlCarrito = async () => {
 	
 	//Si existe le actualizo la cantidad, y lo elimino para volverlo a insertar
 	if (prodExiste) {
+		let stock = parseInt(stockDisponible.textContent)
+		if (stock < (prodExiste.Cantidad + producto.Cantidad)) {
+			alert("Ya existe producto en carrito y no hay mas stock disponible")
+			return
+		}
+
 		productos = productos.filter(p => p.Id != idProducto.textContent)
 		producto.Cantidad = prodExiste.Cantidad + producto.Cantidad
 	}
@@ -373,3 +398,33 @@ const agregarAlCarrito = async () => {
 	const btnClose = document.getElementById("modalClose")
 	btnClose.click()
 }
+
+const ordenarListaProductos = async (e) => {
+	let selector = e == null ? "1" : e.target.value
+	switch (selector) {
+		case "1":
+			//Nombre (A - Z)
+		  	resultados.sort((a, b)=> a.NombreProducto.toLowerCase().charCodeAt(0) - b.NombreProducto.toLowerCase().charCodeAt(0))
+		  	break;
+		case "2":
+			//Nombre (Z - A)
+			resultados.sort((a, b)=> b.NombreProducto.toLowerCase().charCodeAt(0) - a.NombreProducto.toLowerCase().charCodeAt(0))
+		  	break;
+		case "3":
+			//Precio (Bajo > Alto)
+			resultados.sort((a, b)=> a.PrecioVenta.toLowerCase().charCodeAt(0) - b.PrecioVenta.toLowerCase().charCodeAt(0))
+		  	break;
+		case "4":
+			//Precio (Alto > Bajo)
+			resultados.sort((a, b)=> b.PrecioVenta.toLowerCase().charCodeAt(0) - a.PrecioVenta.toLowerCase().charCodeAt(0))
+		  	break;
+	}
+
+	if (e != null) {
+		llenarGrillaProductos()
+	}
+}
+
+const ordenar = document.getElementById("sortby")
+
+ordenar.addEventListener("change", ordenarListaProductos)

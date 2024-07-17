@@ -176,11 +176,11 @@
                                         <div class="top-bar-right">
                                             <div class="product-short">
                                                 <p>Ordenar Por : </p>
-                                                <select class="nice-select" name="sortby">
-                                                    <option value="sales">Nombre (A - Z)</option>
-                                                    <option value="sales">Nombre (Z - A)</option>
-                                                    <option value="rating">Precio (Bajo &gt; Alto)</option>
-                                                    <option value="rating">Precio (Alto &gt; Bajo)</option>
+                                                <select class="nice-select" name="sortby" id="sortby">
+                                                    <option value="1">Nombre (A - Z)</option>
+                                                    <option value="2">Nombre (Z - A)</option>
+                                                    <option value="3">Precio (Bajo &gt; Alto)</option>
+                                                    <option value="4">Precio (Alto &gt; Bajo)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -364,7 +364,7 @@
                                     <h5><span id="marcaProductoModal">marca</span></h5>
                                     <div class="availability mt-10">
                                         <h5>Disponibilidad:</h5>
-                                        <span id="stockProductoModal">1 en stock</span>
+                                        <span id="stockProductoModal">1 en stock</span>                                        
                                     </div>
                                     <div class="pricebox">
                                         <span id="precioProductoModal" class="regular-price">$0000.00</span>
@@ -373,9 +373,10 @@
                                     <div class="quantity-cart-box d-flex align-items-center mt-20">
                                         <div class="quantity">
                                             <div class="pro-qty"><input id="cantidadModal" type="text" value="1"></div>
+                                            <span hidden id="stockDisponible"></span>
                                         </div>
                                         <div class="action_link">
-                                            <a class="buy-btn" href="#listado" onclick="agregarAlCarrito()">Agregar al Carrito<i class="fa fa-shopping-cart"></i> </a>
+                                            <a class="buy-btn" id="btnAgregar" href="#listado" onclick="agregarAlCarrito()">Agregar al Carrito<i class="fa fa-shopping-cart"></i> </a>
                                         </div>
                                     </div>
                                 </div>

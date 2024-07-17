@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="meta description">
+
+    <!-- Site title -->
+    <title>Carrito</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/ico/matElec.ico" type="image/x-icon" />
+    <!-- Bootstrap CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font-Awesome CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <!-- helper class css -->
+    <link href="assets/css/helper.min.css" rel="stylesheet">
+    <!-- Plugins CSS -->
+    <link href="assets/css/plugins.css" rel="stylesheet">
+    <!-- Main Style CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/skin-default.css" rel="stylesheet" id="galio-skin">
+</head>
+
+<body>
+
+    <div class="wrapper box-layout">
+        <!-- header area start -->
+        <header>
+
+            <!-- header middle start -->
+            <div class="header-middle-area bg-lightgray pt-20 pb-20">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-sm-3">
+                            <div class="brand-logo">
+                                <a href="index.html">
+                                    <img src="img/png/logo.png" alt="brand logo">
+                                </a>
+                            </div>
+                        </div> <!-- end logo area -->
+                        <div class="col-sm-6">
+                            <div class="header-middle-right">
+                                <div class="header-middle-block">
+                                    <div class="header-middle-searchbox">
+                                        <ul>
+                                            <li><i class="fa fa-envelope"></i> hugo@gmail.com</li>
+                                            <li><i class="fa fa-phone"></i> (011) 15 1111 1111</li>
+                                            <li><i class="fa fa-map-marker"></i> Dirección: Glew</li>
+                                        </ul>
+                                        <div class="working-time">
+                                            <h5>Horarios de atención</h5>
+                                            <p><span>Lunes a Viernes: </span>08AM - 13PM y 15AM - 19PM <br>
+                                               <span>Sábados: </span>08AM - 13PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- header middle end -->
+
+        </header>
+        <!-- header area end -->
+
+        <!-- cart main wrapper start -->
+        <div class="cart-main-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Cart Table Area -->
+                        <div class="cart-table table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="pro-thumbnail">Imagen</th>
+                                    <th class="pro-title">Producto</th>
+                                    <th class="pro-price">Precio</th>
+                                    <th class="pro-quantity">Cantidad</th>
+                                    <th class="pro-subtotal">Total</th>
+                                    <th class="pro-remove">Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody id="bodyCarrito">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="row">
+                    <div class="col-lg-5 ml-auto">
+                        <!-- Cart Calculation Area -->
+                        <div class="cart-calculator-wrapper">
+                            <div class="cart-calculate-items">
+                                <h3>Totales</h3>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr class="total">
+                                            <td>Total</td>
+                                            <td class="total-amount" id="totalCarrito">$0</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <a href="#bodyCarrito" onclick="imprimir()" class="sqr-btn d-block">Imprimir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- cart main wrapper end -->
+
+    </div>
+
+    <!--All jQuery, Third Party Plugins & Activation (main.js) Files-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <!-- Jquery Min Js -->
+    <script src="assets/js/vendor/jquery-3.3.1.min.js"></script>
+    <!-- Popper Min Js -->
+    <script src="assets/js/vendor/popper.min.js"></script>
+    <!-- Bootstrap Min Js -->
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <!-- Plugins Js-->
+    <script src="assets/js/plugins.js"></script>
+    <!-- Ajax Mail Js -->
+    <script src="assets/js/ajax-mail.js"></script>
+    <!-- Active Js -->
+    <script src="assets/js/carrito.js"></script>
+    <script src="assets/js/imprimir.js"></script>
+    <!-- Switcher JS [Please Remove this when Choose your Final Projct] -->
+    <script src="assets/js/switcher.js"></script>
+</body>
+
+</html>
