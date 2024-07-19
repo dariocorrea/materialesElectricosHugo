@@ -71,7 +71,7 @@ const actualizarStock = async (productos) => {
 			stockNuevo
 		  });
 	
-		const res =  fetch(`/actualizarStock?_metodo=PUT`, {
+		const res = fetch(`/actualizarStock?_metodo=PUT`, {
 			method: 'POST',
 			headers: {
 				"Content-Type": "application/json",

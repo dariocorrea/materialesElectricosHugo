@@ -38,6 +38,22 @@ module.exports = {
         }
     },
 
+    getListaMarcas: async (req, res) => {
+        try {
+            const idMarca = req.params.id
+
+            const [marcas] = await conn.query(`SELECT * FROM marca 
+                                                    WHERE (IdMarca = ${idMarca} 
+                                                      OR ${idMarca} = 0) `);
+
+            res.json(marcas);
+        } catch (error) {
+            throw error;
+        } finally {
+            conn.releaseConnection();
+        }
+    },
+
     getDetalleProducto: async (req, res) => {
         try {
             const idProducto = req.params.id
@@ -87,7 +103,7 @@ module.exports = {
             const { idProducto, stockNuevo} = req.body;
 
             const modificado = await conn.query(sql, [stockNuevo, idProducto]);
-            console.log('Producto actualizado exitosamente');
+            console.log('Stock actualizado exitosamente');
 
             //res.redirect('/producto');
             res.status(200)
@@ -97,7 +113,24 @@ module.exports = {
         }
     },
 
+    actualizarProducto: async (req, res) => {
+        try {
+            console.log(req.body);
+            const sql = `UPDATE producto SET NombreProducto=?, CodigoProducto=?, IdCategoria=?, IdMarca=?, PrecioCompra=?,
+                                             PrecioVenta=?, DescripcionProducto=?, Imagen=?, Stock=?
+                          WHERE IdProducto=?`;
+            const { idProducto, nombreProducto, codigoProducto, idCategoria, idMarca, precioCompra, precioVenta, descripcionProducto, imagen, stock} = req.body;
 
+            const modificado = await conn.query(sql, [nombreProducto, codigoProducto, idCategoria, idMarca, precioCompra, precioVenta, descripcionProducto, imagen, stock, idProducto]);
+            console.log('Producto actualizado exitosamente');
+
+            //res.redirect('/producto');
+            res.status(200).send({ message:"Producto actualizado exitosamente"})
+        } catch (error) {
+            console.error('Error al actualizar el producto:', error);
+            res.status(500).send({ message: "Error al actualizar el producto. Por favor, inténtalo de nuevo." })
+        }
+    },
 
 
 

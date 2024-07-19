@@ -17,12 +17,14 @@ const controladores = require('../controllers/mainControllerProducto');
 
 // const uploadFile = multer({ storage })
 
-router.get('/listaProductos/:id', controladores.getListaProductos);
-router.get('/detalleProducto/:id', controladores.getDetalleProducto);
-router.get('/busquedaProductos', controladores.busquedaProductos);
-router.get('/listadoCategorias/:id', controladores.getListaCategorias);
+router.get('/listaProductos/:id', controladores.getListaProductos)
+router.get('/detalleProducto/:id', controladores.getDetalleProducto)
+router.get('/busquedaProductos', controladores.busquedaProductos)
+router.get('/listadoCategorias/:id', controladores.getListaCategorias)
+router.get('/listadoMarcas/:id', controladores.getListaMarcas)
 
 router.put('/actualizarStock', controladores.actualizarStock)
+router.put('/actualizarProducto', controladores.actualizarProducto)
 
 //router.get('/producto', controladores.getProducto);
 //router.post('/producto', uploadFile.single('imagen'), controladores.crearRegistro);//ejecuta multer

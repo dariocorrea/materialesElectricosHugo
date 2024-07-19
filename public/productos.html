@@ -8,7 +8,7 @@
     <meta name="description" content="meta description">
 
     <!-- Site title -->
-    <title>Materiales Eléctricos - Electro HUGO</title>
+    <title>ABM Productos</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="/img/ico/matElec.ico" type="image/x-icon" />
     <!-- Bootstrap CSS -->
@@ -109,7 +109,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="main-header-inner">
-                                <div class="category-toggle-wrap">
+                                <div class="category-toggle-wrap" hidden>
                                     <div class="category-toggle">
                                         Categorías
                                         <div class="cat-icon">
@@ -128,7 +128,7 @@
                                             </li>
                                             <li><a href="#">Productos <i class="fa fa-angle-down"></i></a>
                                                 <ul class="dropdown">
-                                                    <li><a href="productos.html">ABM Productos</a></li>
+                                                    <li><a href="blog-left-sidebar.html">ABM Productos</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="#">Sobre Nostros</a></li>
@@ -147,15 +147,31 @@
         </header>
         <!-- header area end -->
 
+        <!-- breadcrumb area start -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb-wrap">
+                            <nav aria-label="breadcrumb">
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">ABM Productos</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb area end -->
+
         <!-- page wrapper start -->
         <div class="page-main-wrapper">
             <div class="container">
                 <div class="row">
                     <!-- product main wrap start -->
                     <div class="col-12">
-                        <div class="shop-banner img-full">
-                            <img src="/img/jpg/banner.jpg" alt="">
-                        </div>
                         <!-- product view wrapper area start -->
                         <div class="shop-product-wrapper pt-34">
                             <!-- shop product top wrap start -->
@@ -176,7 +192,7 @@
                                         <div class="top-bar-right">
                                             <div class="product-short">
                                                 <p>Ordenar Por : </p>
-                                                <select class="nice-select" name="sortby" id="sortby">
+                                                <select class="nice-select" name="sortbyABM" id="sortbyABM">
                                                     <option value="1">Nombre (A - Z)</option>
                                                     <option value="2">Nombre (Z - A)</option>
                                                     <option value="3">Precio (Bajo &gt; Alto)</option>
@@ -294,7 +310,7 @@
                                 </div>
                                 <div class="widget-body">
                                     <ul>
-                                        <li><a href="#">ABM Productos</a></li>
+                                        <li><a href="productos.html">ABM Productos</a></li>
                                     </ul>
                                 </div>
                             </div> <!-- single widget end -->
@@ -333,7 +349,7 @@
     </div>
 
     <!-- Quick view modal start -->
-    <div class="modal" id="quick_view">
+    <div class="modal" id="quick_view_abm">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -343,39 +359,48 @@
                     <!-- product details inner end -->
                     <div class="product-details-inner">
                         <div class="row">
-                            <div class="col-lg-5">
+                            <div class="col-lg-4">
                                 <div class="product-large-slider slick-arrow-style_2 mb-20">
                                     <div class="pro-large-img">
-                                        <img id="imagenProductoModal" src="" alt="" />
-                                        <span id="nombreImagenModal" hidden></span>
+                                        <img id="imagenActual" src="" alt="" />
+                                        <span id="nombreImagenActual" hidden></span>
                                     </div>
                                 </div>
+                                <h6>Reemplazar Imagen</h6>
+                                <input type="file" id="imagenNueva" name="imagenNueva">
                             </div>
-                            <div class="col-lg-7">
-                                <div class="product-details-des mt-md-34 mt-sm-34">
-                                    <h3><span id="nombreProductoModal">nombre</span></h3>
-                                    <h6><span id="codigoProductoModal">codigo</span></h6>
-                                    <span id="idProductoModal" hidden></span>
-                                    <h5><span id="marcaProductoModal">marca</span></h5>
-                                    <div class="availability mt-10">
-                                        <h5>Disponibilidad:</h5>
-                                        <span id="stockProductoModal">1 en stock</span>                                        
-                                    </div>
-                                    <div class="pricebox">
-                                        <span id="precioProductoModal" class="regular-price">$0000.00</span>
-                                    </div>
-                                    <p id="descripcionProductoModal">descripcion</p>
-                                    <div class="quantity-cart-box d-flex align-items-center mt-20">
-                                        <div class="quantity">
-                                            <div class="pro-qty"><input id="cantidadModal" type="text" value="1"></div>
-                                            <span hidden id="stockDisponible"></span>
+                            <div class="col-lg-8">
+                                <div class="product-details-edit mt-md-34 mt-sm-34 crear">
+                                    <div class="col-lg-6">
+                                        <span id="idProducto" hidden></span>
+                                        <h6>Nombre</h6>
+                                        <input type="text" id="nombre" name="nombre" required>
+                                        <h6>Código Producto</h6>
+                                        <input type="text" id="codigo" name="codigo" required>
+                                        <h6>Categoría</h6>
+                                        <select id="categoria" name="categoria">
+                                        </select>
+                                        <h6>Marca</h6>
+                                        <select id="marca" name="marca">
+                                        </select>
+                                        <h6>Descripcion</h6>
+                                        <textarea id="descripcion" name="descripcion"></textarea>
+                                    </div> 
+                                    <div class="col-lg-6">                     
+                                        <h6>Precio Compra</h6>
+                                        <input type="number" id="precioCompra" name="precioCompra">
+                                        <h6>Precio Venta</h6>
+                                        <input type="number" id="precioVenta" name="precioVenta">       
+                                        <h6>Stock</h6>
+                                        <input type="number" id="stock" name="stock">
+                                        <div class="action_link_edit">
+                                            <a class="buy-btn" id="btnActualizar" href="#listado" onclick="actualizarProducto()">Actualizar<i class="fa fa-pencil"></i> </a>
                                         </div>
-                                        <div class="action_link">
-                                            <a class="buy-btn" id="btnAgregar" href="#listado" onclick="agregarAlCarrito()">Agregar al Carrito<i class="fa fa-shopping-cart"></i> </a>
-                                        </div>
                                     </div>
+
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <!-- product details inner end -->
@@ -407,6 +432,7 @@
     <!-- Active Js -->
     <script src="assets/js/helper.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/productos.js"></script>
     <!-- Switcher JS [Please Remove this when Choose your Final Projct] -->
     <script src="assets/js/switcher.js"></script>
 </body>

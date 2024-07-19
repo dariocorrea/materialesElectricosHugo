@@ -3,20 +3,20 @@ const elementosPorPagina = 4
 let cantTotalProductos
 let paginaActual = 1
 
-const avanzarPagina = async() => {
+const avanzarPagina = async(esABMproductos) => {
 	paginaActual = paginaActual + 1
-	llenarGrillaProductos()
+	llenarGrillaProductos(esABMproductos)
 }
 
-const retrocederPagina = async() => {
+const retrocederPagina = async(esABMproductos) => {
 	paginaActual = paginaActual - 1
-	llenarGrillaProductos()
+	llenarGrillaProductos(esABMproductos)
 }
 
-const cambiarPagina = async(pagina) => {	
+const cambiarPagina = async(pagina, esABMproductos) => {	
 	if (paginaActual !== pagina) {
 		paginaActual = pagina		
-		llenarGrillaProductos()
+		llenarGrillaProductos(esABMproductos)
 	}
 }
 
@@ -30,7 +30,7 @@ const obtenerPaginasTotales = async () =>  {
 	return Math.ceil(resultados.length / elementosPorPagina)
 }
 
-const gestionarBotones = async () => {
+const gestionarBotones = async (esABMproductos) => {
 	const anterior = document.querySelector(`#anterior`)
 	const siguiente = document.querySelector(`#siguiente`)
 	const pagNro = document.querySelector(`#pagina_${paginaActual}`)
@@ -41,14 +41,14 @@ const gestionarBotones = async () => {
 		anterior.removeAttribute("onclick")
 		anterior.removeAttribute("href")
 	} else {
-		anterior.setAttribute("onclick", "retrocederPagina()")
+		anterior.setAttribute("onclick", `retrocederPagina(${esABMproductos})`)
 		anterior.setAttribute("href","#listado")
 	}
 	if (paginaActual === await obtenerPaginasTotales()) {
 		siguiente.removeAttribute("onclick")
 		siguiente.removeAttribute("href")
 	} else {
-		siguiente.setAttribute("onclick", "avanzarPagina()")
+		siguiente.setAttribute("onclick", `avanzarPagina(${esABMproductos})`)
 		siguiente.setAttribute("href","#listado")
 	}
 }
@@ -77,7 +77,58 @@ const buscarListado = async (idCategoria = 0) => {
 	return data
 }
 
-const llenarGrillaProductos = async () => {
+const generarHTMLproductos = async (productos) => {
+	let listaHTML = ''
+
+	productos.forEach((producto, i) => {
+		listaHTML += ` 
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<div class="product-item fix mb-30">
+					<div class="product-thumb">
+						<!-- <a href="producto-detalle.html?idProducto=${producto.IdProducto}"> -->
+							<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
+						<!-- </a> -->
+						<div class="product-action-link">                                                
+							<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Ver"><i class="fa fa-search"></i></span> </a>
+							<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Agregar al Carrito"><i class="fa fa-shopping-cart"></i></span> </a>
+						</div>
+					</div>
+					<div class="product-content">
+						<h4>${producto.NombreProducto}</h4>
+						<h3>${producto.NombreMarca}</h3>
+						<h4></h4>
+						<div class="pricebox">
+							<span class="regular-price">$${producto.PrecioVenta}</span>
+						</div>
+					</div>
+				</div>
+				<div class="product-list-item mb-30">
+					<div class="product-thumb">
+						<!-- <a href="producto-detalle.html?idProducto=${producto.IdProducto}"> -->
+							<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
+						<!-- </a> -->
+					</div>
+					<div class="product-list-content">
+						<h3>${producto.NombreProducto}</h3>
+						<h4>${producto.NombreMarca}</h4>
+						<div class="pricebox">
+							<span class="regular-price">$${producto.PrecioVenta}</span>
+						</div>
+						<p>${producto.DescripcionProducto}</p>						
+						<div class="product-list-action-link">
+							<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="top" title="Ver"><i class="fa fa-search"></i></span> </a>
+							<a class="buy-btn" href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view" data-placement="top" title="Agregar al Carrito">Agregar al Carrito<i class="fa fa-shopping-cart"></i> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+	  });
+
+	  return listaHTML
+}
+
+const llenarGrillaProductos = async (esABMproductos) => {
 	let listaHTML = document.querySelector(`#listado`)
 	let paginacion = document.querySelector(`#paginacion`)
 
@@ -96,65 +147,27 @@ const llenarGrillaProductos = async () => {
 
 		mostrarCantidad.innerHTML = `${cantTotalProductos} resultados`
 		paginacion.innerHTML += `
-				<li><a class="Previous" id="anterior" href="#listado" onclick=retrocederPagina()>Anterior</a></li>
+				<li><a class="Previous" id="anterior" href="#listado" onclick=retrocederPagina(${esABMproductos})>Anterior</a></li>
 				 `
 
 		for (let i = 1; i <= paginasTotales; i++) {
 			paginacion.innerHTML += `
-				<li id="pagina_${i}"><a href="#listado" onclick=cambiarPagina(${i})>${i}</a></li>
+				<li id="pagina_${i}"><a href="#listado" onclick=cambiarPagina(${i},${esABMproductos})>${i}</a></li>
 				`			
 		}
 
 		paginacion.innerHTML += `
-				<li><a class="Next" id="siguiente" href="#listado" onclick=avanzarPagina()>Siguiente</a></li>
+				<li><a class="Next" id="siguiente" href="#listado" onclick=avanzarPagina(${esABMproductos})>Siguiente</a></li>
 				 `
 
-		listaResult.forEach((producto, i) => {
-			listaHTML.innerHTML += ` 
-				<div class="col-lg-3 col-md-4 col-sm-6">
-					<div class="product-item fix mb-30">
-						<div class="product-thumb">
-							<!-- <a href="producto-detalle.html?idProducto=${producto.IdProducto}"> -->
-								<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
-							<!-- </a> -->
-							<div class="product-action-link">                                                
-								<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Ver"><i class="fa fa-search"></i></span> </a>
-								<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Agregar al Carrito"><i class="fa fa-shopping-cart"></i></span> </a>
-							</div>
-						</div>
-						<div class="product-content">
-							<h4>${producto.NombreProducto}</h4>
-							<h3>${producto.NombreMarca}</h3>
-							<h4></h4>
-							<div class="pricebox">
-								<span class="regular-price">$${producto.PrecioVenta}</span>
-							</div>
-						</div>
-					</div>
-					<div class="product-list-item mb-30">
-						<div class="product-thumb">
-							<!-- <a href="producto-detalle.html?idProducto=${producto.IdProducto}"> -->
-								<img src="assets/uploads/${producto.Imagen}" class="img-pri" alt="${producto.Imagen}">
-							<!-- </a> -->
-						</div>
-						<div class="product-list-content">
-							<h3>${producto.NombreProducto}</h3>
-							<h4>${producto.NombreMarca}</h4>
-							<div class="pricebox">
-								<span class="regular-price">$${producto.PrecioVenta}</span>
-							</div>
-							<p>${producto.DescripcionProducto}</p>						
-							<div class="product-list-action-link">
-								<a href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="top" title="Ver"><i class="fa fa-search"></i></span> </a>
-								<a class="buy-btn" href="" onclick="detalleProductoModal(${producto.IdProducto})" data-toggle="modal" data-target="#quick_view" data-placement="top" title="Agregar al Carrito">Agregar al Carrito<i class="fa fa-shopping-cart"></i> </a>
-							</div>
-						</div>
-					</div>
-				</div>
-			`;
-	  	});
+		if (!esABMproductos) {
+			listaHTML.innerHTML += await generarHTMLproductos(listaResult)
+		}
+		else {
+			listaHTML.innerHTML += await generarHTMLABMproductos(listaResult)
+		}
 
-		await gestionarBotones()
+		await gestionarBotones(esABMproductos)
 	}
 }
 
@@ -189,23 +202,30 @@ const busquedaProductos = async (search) => {
 	return data
   }
 
-const listadoCategorias = async () => {
+const buscarCategorias = async (idCategoria) => {
 	const token = localStorage.getItem('jwt-token')
-
-	const res = await fetch(`/listadoCategorias/0`, {
+  
+	const res = await fetch(`/listadoCategorias/${idCategoria}`, {
 	  method: 'GET',
 	  headers: {
 		"Content-Type": "application/json",
-		"Authorization": `Bearer ${token}`
+		"Authorization": `Bearer ${token}` 
 	  }
 	})
   
 	if (!res.ok) {
 	  window.location.href = "/login.html"
+  
 	  throw Error("Problemas en login")
 	}
   
-	const listaResult = await res.json()
+	const data = await res.json()
+  
+	return data
+}
+
+const listadoCategorias = async () => {
+	const listaResult = await buscarCategorias(0)
 
 	let listaCateHTML = document.querySelector(`#listaCategorias`)
 
@@ -218,7 +238,7 @@ const listadoCategorias = async () => {
 	});
 }
 
-const listadoProductos = async (search, idCategoria) => {
+const listadoProductos = async (search, idCategoria, esABMproductos) => {
 	//let resultados  
 	if (search != "" && search != null) {
 	  resultados = await busquedaProductos(search)
@@ -234,8 +254,8 @@ const listadoProductos = async (search, idCategoria) => {
 	resultados.splice(29)
 	cantTotalProductos = resultados.length
 
-	await ordenarListaProductos()
-	await llenarGrillaProductos()
+	await ordenarListaProductos(null, esABMproductos)
+	await llenarGrillaProductos(esABMproductos)
 }
 
 const buscarProducto = async (idProducto) => {
@@ -259,6 +279,29 @@ const buscarProducto = async (idProducto) => {
   
 	return data
 }
+
+const buscarMarcas = async (idMarca) => {
+	const token = localStorage.getItem('jwt-token')
+	
+	const res = await fetch(`/listadoMarcas/${idMarca}`, {
+		method: 'GET',
+		headers: {
+		"Content-Type": "application/json",
+		"Authorization": `Bearer ${token}` 
+		}
+	})
+	
+	if (!res.ok) {
+		window.location.href = "/login.html"
+	
+		throw Error("Problemas en login")
+	}
+	
+	const data = await res.json()
+	
+	return data
+}
+	
 
 const detalleProductoModal = async (idProducto) => {
 	let cantidad = document.getElementById("cantidadModal")	
@@ -399,7 +442,15 @@ const agregarAlCarrito = async () => {
 	btnClose.click()
 }
 
-const ordenarListaProductos = async (e) => {
+const ordenarListaProductosHome = async (e) => {
+	await ordenarListaProductos(e, false)
+}
+
+const ordenarListaABMProductos = async (e) => {
+	await ordenarListaProductos(e, true)
+}
+
+const ordenarListaProductos = async (e, esABMproductos) => {
 	let selector = e == null ? "1" : e.target.value
 	switch (selector) {
 		case "1":
@@ -421,10 +472,18 @@ const ordenarListaProductos = async (e) => {
 	}
 
 	if (e != null) {
-		llenarGrillaProductos()
+		llenarGrillaProductos(esABMproductos)
 	}
 }
 
-const ordenar = document.getElementById("sortby")
+//solo se llama desde index.html
+const pathActual = window.location.pathname;
 
-ordenar.addEventListener("change", ordenarListaProductos)
+if (pathActual == '/' || pathActual.includes('/index.html')) {
+	const ordenar = document.getElementById("sortby")
+	ordenar.addEventListener("change", ordenarListaProductosHome)
+}
+else if (pathActual.includes('/productos.html')){
+	const ordenar = document.getElementById("sortbyABM")
+	ordenar.addEventListener("change", ordenarListaABMProductos)
+}
