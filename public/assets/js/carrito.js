@@ -31,7 +31,7 @@ const llenarCarrito = async () => {
 }
 
 const eliminarProductoDeCarrito = async (idProducto) => {
-	eliminarProducto(idProducto)
+	eliminarProductoCarrito(idProducto)
 	//llenarCarrito()
 }
 

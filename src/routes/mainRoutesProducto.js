@@ -41,22 +41,12 @@ router.get('/listadoMarcas/:id', controladores.getListaMarcas)
 router.put('/actualizarStock', controladores.actualizarStock)
 router.put('/actualizarProducto', controladores.actualizarProducto)
 
+router.delete('/eliminarProducto', controladores.eliminarProducto);
+
+router.post('/crearProducto', controladores.crearProducto);
+
 router.post('/upload', uploadFile.single('imagen'), (req, res) => {
     res.status(200).send({ message:"Archivo subido exitosamente"})
   });
-
-  
-router.get('/producto', controladores.getProducto);
-router.get('/bienvenido', (req, res) => {
-res.render('bienvenido'); // Renderiza el archivo bienvenido.ejs
-});
-
-//router.post('/producto', uploadFile.single('imagen'), controladores.crearRegistro);//ejecuta multer
-//router.post('/contactar', controladores.contactar);
-//router.post('/suscribir', controladores.suscribir);
-//router.post('/producto', controladores.crearRegistro);
-router.get('/modificar/:id', controladores.getModificar);
-//router.put('/modificar', controladores.actualizar); // Modifica la ruta y asóciala al método PUT // era /modificar/:id
-//router.delete('/producto', controladores.eliminar);
 
 module.exports = router;

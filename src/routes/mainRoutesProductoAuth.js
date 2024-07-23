@@ -1,21 +1,21 @@
 const express = require('express');
+const fs = require("fs");
+
 const router = express.Router();
 const controladores = require('../controllers/mainControllerProducto');
 
-// const multer = require('multer')
+const multer = require('multer')
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, `public/assets/uploads/`)
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname)
+    }
+})
 
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, `public/img/`)
-//     },
-//     filename: (req, file, cb) => {
-//         console.log(file);
-//         cb(null, Date.now() + "_" + file.originalname)
-//     }
-// })
-
-// const uploadFile = multer({ storage })
+const uploadFile = multer({ storage })
 
 router.get('/listaProductos/:id', controladores.getListaProductos)
 router.get('/detalleProducto/:id', controladores.getDetalleProducto)
@@ -26,17 +26,12 @@ router.get('/listadoMarcas/:id', controladores.getListaMarcas)
 router.put('/actualizarStock', controladores.actualizarStock)
 router.put('/actualizarProducto', controladores.actualizarProducto)
 
-//router.get('/producto', controladores.getProducto);
-//router.post('/producto', uploadFile.single('imagen'), controladores.crearRegistro);//ejecuta multer
-router.post('/contactar', controladores.contactar);
-router.post('/suscribir', controladores.suscribir);
-router.post('/producto', controladores.crearRegistro);
-router.get('/bienvenido', (req, res) => {
-res.render('bienvenido'); // Renderiza el archivo bienvenido.ejs
-});
+router.delete('/eliminarProducto', controladores.eliminarProducto);
 
-//router.get('/modificar/:id', controladores.getModificar);
-router.put('/modificar', controladores.actualizar); // Modifica la ruta y asóciala al método PUT // era /modificar/:id
-router.delete('/producto', controladores.eliminar);
+router.post('/crearProducto', controladores.crearProducto);
+
+router.post('/upload', uploadFile.single('imagen'), (req, res) => {
+    res.status(200).send({ message:"Archivo subido exitosamente"})
+  });
 
 module.exports = router;

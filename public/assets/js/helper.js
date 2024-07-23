@@ -1,5 +1,5 @@
 let resultados
-const elementosPorPagina = 4
+const elementosPorPagina = 8
 let cantTotalProductos
 let paginaActual = 1
 
@@ -247,11 +247,11 @@ const listadoProductos = async (search, idCategoria, esABMproductos) => {
 	  resultados = await buscarListado(idCategoria)
 	}
 
-	resultados = resultados.concat(resultados)
-	resultados = resultados.concat(resultados)
-	resultados = resultados.concat(resultados)
-	resultados = resultados.concat(resultados)
-	resultados.splice(29)
+	// resultados = resultados.concat(resultados)
+	// resultados = resultados.concat(resultados)
+	// resultados = resultados.concat(resultados)
+	// resultados = resultados.concat(resultados)
+	// resultados.splice(29)
 	cantTotalProductos = resultados.length
 
 	await ordenarListaProductos(null, esABMproductos)
@@ -350,7 +350,7 @@ const vaciarCarrito = async () => {
 	dibujarCarrito([])
 }
 
-const eliminarProducto = async (idProducto) => {
+const eliminarProductoCarrito = async (idProducto) => {
 	let productos = JSON.parse(localStorage.getItem("productos")) || []
 	
 	productos = productos.filter(p => p.Id != idProducto)
@@ -382,7 +382,7 @@ const dibujarCarrito = async (productos) => {
 					<span>${producto.Cantidad} x $${producto.Precio}</span>
 				</div>
 				<div class="del-icon">
-					<a href="index.html" onclick=eliminarProducto(${producto.Id})><i class="fa fa-times"></i></a>
+					<a href="index.html" onclick=eliminarProductoCarrito(${producto.Id})><i class="fa fa-times"></i></a>
 				</div>
 			</li>
 		`
@@ -455,19 +455,31 @@ const ordenarListaProductos = async (e, esABMproductos) => {
 	switch (selector) {
 		case "1":
 			//Nombre (A - Z)
-		  	resultados.sort((a, b)=> a.NombreProducto.toLowerCase().charCodeAt(0) - b.NombreProducto.toLowerCase().charCodeAt(0))
-		  	break;
+			resultados.sort((a, b)=>{
+				let x = a.NombreProducto.toLowerCase();
+				let y = b.NombreProducto.toLowerCase();
+				if (x < y) {return -1;}
+				if (x > y) {return 1;}
+				return 0;
+			});
+			break;
 		case "2":
 			//Nombre (Z - A)
-			resultados.sort((a, b)=> b.NombreProducto.toLowerCase().charCodeAt(0) - a.NombreProducto.toLowerCase().charCodeAt(0))
-		  	break;
+			resultados.sort((a, b)=>{
+				let x = a.NombreProducto.toLowerCase();
+				let y = b.NombreProducto.toLowerCase();
+				if (x > y) {return -1;}
+				if (x < y) {return 1;}
+				return 0;
+			});
+			break;
 		case "3":
 			//Precio (Bajo > Alto)
-			resultados.sort((a, b)=> a.PrecioVenta.toLowerCase().charCodeAt(0) - b.PrecioVenta.toLowerCase().charCodeAt(0))
+			resultados.sort((a, b)=> a.PrecioVenta - b.PrecioVenta)
 		  	break;
 		case "4":
 			//Precio (Alto > Bajo)
-			resultados.sort((a, b)=> b.PrecioVenta.toLowerCase().charCodeAt(0) - a.PrecioVenta.toLowerCase().charCodeAt(0))
+			resultados.sort((a, b)=> b.PrecioVenta - a.PrecioVenta)
 		  	break;
 	}
 

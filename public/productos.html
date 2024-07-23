@@ -21,6 +21,7 @@
     <link href="assets/css/plugins.css" rel="stylesheet">
     <!-- Main Style CSS -->
     <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/productos.css" rel="stylesheet">
     <link href="assets/css/skin-default.css" rel="stylesheet" id="galio-skin">
 </head>
 
@@ -75,7 +76,7 @@
                                 <div class="header-middle-block">
                                     <div class="header-middle-searchbox">
                                         <input id="search" type="text" placeholder="Buscar...">
-                                        <button onclick="busquedaPorNombre()" class="search-btn"><i class="fa fa-search"></i></button>
+                                        <button onclick="busquedaPorNombreABM()" class="search-btn"><i class="fa fa-search"></i></button>
                                     </div>
                                     <div class="header-mini-cart">
                                         <div class="mini-cart-btn">
@@ -128,7 +129,7 @@
                                             </li>
                                             <li><a href="#">Productos <i class="fa fa-angle-down"></i></a>
                                                 <ul class="dropdown">
-                                                    <li><a href="blog-left-sidebar.html">ABM Productos</a></li>
+                                                    <li><a href="productos.html">ABM Productos</a></li>
                                                 </ul>
                                             </li>
                                             <li><a href="#">Sobre Nostros</a></li>
@@ -205,8 +206,13 @@
                             </div>
                             <!-- shop product top wrap start -->
 
-                            <div class="shop-product-wrap grid row" id="listado">
+                            <div class="action_link_edit action_link_create">
+                                <button class="buy-btn" onclick="getCrearProducto()">Crear Producto<i class="fa fa-plus"></i></button>
+                                <a id="btnCrearModal" href="" data-toggle="modal" data-target="#quick_view_abm" hidden></a>
+                                <button class="buy-btn" onclick="cargarProductos()">Cargar Productos<i class="fa fa-table"></i></button>
+                            </div>
 
+                            <div class="shop-product-wrap grid row" id="listado">
                             </div>
 
                         </div>
@@ -348,67 +354,110 @@
 
     </div>
 
-    <!-- Quick view modal start -->
     <div class="modal" id="quick_view_abm">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg-edit modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" id="modalClose" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
                     <!-- product details inner end -->
-                    <div class="product-details-inner">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="product-large-slider slick-arrow-style_2 mb-20">
+                    <form id="myForm">
+                        <h2 class="contac-1" id="tituloModal"></h2>
+                        <div class="grid-container-form">
+                            <div class="grid-item-form1">
+                                <!-- <div class="product-large-slider slick-arrow-style_2 mb-20"> -->
                                     <div class="pro-large-img">
                                         <img id="imagenActual" src="" alt="" />
                                         <span id="nombreImagenActual" hidden></span>
                                     </div>
-                                </div>
-                                <h6>Reemplazar Imagen</h6>
-                                <input type="file" id="imagenNueva" name="imagenNueva">
+                                <!-- </div> -->
                             </div>
-                            <div class="col-lg-8">
-                                <div class="product-details-edit mt-md-34 mt-sm-34 crear">
-                                    <div class="col-lg-6">
-                                        <span id="idProducto" hidden></span>
-                                        <h6>Nombre</h6>
-                                        <input type="text" id="nombre" name="nombre" required>
-                                        <h6>Código Producto</h6>
-                                        <input type="text" id="codigo" name="codigo" required>
-                                        <h6>Categoría</h6>
-                                        <select id="categoria" name="categoria">
-                                        </select>
-                                        <h6>Marca</h6>
-                                        <select id="marca" name="marca">
-                                        </select>
-                                        <h6>Descripcion</h6>
-                                        <textarea id="descripcion" name="descripcion"></textarea>
-                                    </div> 
-                                    <div class="col-lg-6">                     
-                                        <h6>Precio Compra</h6>
-                                        <input type="number" id="precioCompra" name="precioCompra">
-                                        <h6>Precio Venta</h6>
-                                        <input type="number" id="precioVenta" name="precioVenta">       
-                                        <h6>Stock</h6>
-                                        <input type="number" id="stock" name="stock">
-                                        <div class="action_link_edit">
-                                            <a class="buy-btn" id="btnActualizar" href="#listado" onclick="actualizarProducto()">Actualizar<i class="fa fa-pencil"></i> </a>
-                                        </div>
-                                    </div>
-
+                            <div class="grid-item-form2">
+                                <div class="contac-6">
+                                    <label for="imagenNueva">Reemplazar Imagen</label>
+                                    <br>
+                                    <input type="file" id="imagenNueva" name="imagenNueva">
+                                </div>
+                            </div>                            
+                            <div class="grid-item-form3">
+                                <span id="idProducto" hidden></span>
+                                <div class="contac-6">
+                                    <label for="nombre">Nombre Producto *</label>
+                                    <br>
+                                    <input class="campos" required type="text" id="nombre" name="nombre"
+                                        placeholder="Ingrese nombre producto aquí.....">
                                 </div>
                             </div>
-
+                            <div class="grid-item-form4">
+                                <div class="contac-6">
+                                    <label for="codigo">Código Producto *</label>
+                                    <br>
+                                    <input class="campos" required type="text" id="codigo" name="codigo"
+                                        placeholder="Ingrese código producto aquí.....">
+                                </div>
+                            </div>
+                            <div class="grid-item-form5">
+                                <div class="contac-6">
+                                    <label for="categoria">Categoría *</label>
+                                    <br>
+                                    <select class="campos" required id="categoria" name="categoria">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid-item-form6">
+                                <div class="contac-6">
+                                    <label for="marca">Marca *</label>
+                                    <br>
+                                    <select class="campos" required id="marca" name="marca">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid-item-form7">
+                                <div class="contac-6">
+                                    <label for="precioCompra">Precio Compra *</label>
+                                    <br>
+                                    <input class="campos" required type="number" step="0.1" id="precioCompra" name="precioCompra"
+                                        placeholder="Ingrese precio compra aquí.....">
+                                </div>
+                            </div>
+                            <div class="grid-item-form8">
+                                <div class="contac-6">
+                                    <label for="precioVenta">Precio Venta *</label>
+                                    <br>
+                                    <input class="campos" required type="number" step="0.1" id="precioVenta" name="precioVenta"
+                                        placeholder="Ingrese precio venta aquí.....">
+                                </div>
+                            </div>
+                            <div class="grid-item-form9">
+                                <div class="contac-6">
+                                    <label for="precioVenta">Stock *</label>
+                                    <br>
+                                    <input class="campos" required type="number" id="stock" name="stock"
+                                        placeholder="Ingrese stock aquí.....">
+                                </div>
+                            </div>                        
+                            <div class="grid-item-form10">
+                                <div class="contac-6">
+                                    <label for="descripcion">Descripción</label>
+                                    <br>
+                                    <textarea class="campos" name="descripcion" id="descripcion" cols="20" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="grid-item-form11">
+                                <div class="action_link_edit">
+                                    <button id="btnActualizar" type="submit" class="buy-btn" hidden>Actualizar<i class="fa fa-pencil"></i></button>
+                                    <button id="btnCrear" type="submit" class="buy-btn" hidden>Crear Producto<i class="fa fa-plus"></i></button>
+                                    <!-- <button type="reset" class="buy-btn">Borrar<i class="fa fa-trash"></i></button> -->
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     <!-- product details inner end -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- Quick view modal end -->
 
     <!-- Scroll to top start -->
     <div class="scroll-top not-visible">

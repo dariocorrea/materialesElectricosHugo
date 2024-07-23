@@ -1,0 +1,156 @@
+.modal-lg-edit {
+    max-width: 80%;
+}
+
+.contac-1 {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #3F51B5;
+}
+
+.contac-6 label{
+    margin-bottom: 1px;
+    font-weight: 700;
+}
+
+.contac-10 {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.contac-13 {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 25px;
+}
+
+.contac-14 {
+    width: 10%;
+    height: auto;
+    font-size: 1.2vw;
+    font-family: cursive;
+    margin-right: 20px;
+    background-color: #D1BB9E;
+    border-radius: 50%;
+    cursor: pointer;
+}
+  
+.contac-14:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+    background-color: #FFD43B;
+}
+
+.contac-15 {
+    display: flex;
+    justify-content: center;
+}
+  
+.contac-15 button {
+    width: 13%;
+    height: auto;
+    font-size: 1vw;
+    font-family: cursive;
+    border-radius: 50%;
+    background-color: #F9F07A;
+    cursor: pointer;
+    padding: 1px;
+}
+  
+.contac-15 input {
+    width: auto;
+    font-size: 1.2vw;
+    font-family: cursive;
+}
+
+.pro-large-img img {
+    height: 250px;
+    margin: auto;
+    border: 1px solid #e5e5e5;
+}
+
+.action_link_create {
+    margin-bottom: 20px;
+}
+
+.action_link_edit button.buy-btn {
+    color: #ffffff;
+    height: 40px;
+    width: 200px;
+    margin-top: 20px;
+    font-weight: 600;
+    line-height: 35px;
+    display: inline-block;
+    text-align: center;
+    background-color: #3F51B5;
+    text-transform: capitalize;
+}
+
+.action_link_edit button.buy-btn i {
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    line-height: 35px;
+    float: right;
+}
+
+.campos {
+    width: 90%;
+    /* Cambia el valor de acuerdo al tamaño deseado */
+    margin: 2px;
+    /* Añade margen alrededor del contenedor si es necesario */
+    padding: 5px;
+    /* Añade relleno al contenedor si es necesario */
+    /* border-radius: 5%; */
+    border: solid grey;
+    box-shadow: 6px 9px 0px -2px rgba(118, 111, 111, 0.42);
+    -webkit-box-shadow: 6px 9px 0px -2px rgba(118, 111, 111, 0.42);
+    -moz-box-shadow: 6px 9px 0px -2px rgba(118, 111, 111, 0.42);
+}
+
+.grid-container-form {
+    display: grid;
+    grid-template-columns: 32% auto auto;
+}
+
+
+/* PC */
+@media (769px <=width) {
+    .grid-item-form1 {
+        grid-area: 1 / 1 / span 3 / span 1;
+    }
+    
+    .grid-item-form2 {
+        grid-area: 4 / 1 / span 1 / span 1;
+    }
+    
+    .grid-item-form10 {
+        grid-area: 5 / 2 / span 1 / span 2;
+    }
+    
+    .grid-item-form11 {
+        grid-area: 6 / 2 / span 1 / span 2;
+    }
+}
+
+/* TABLET */
+@media (461px <=width <=768px) {
+    .grid-container-form {
+        grid-template-columns: auto;
+    }
+}
+
+/* CELULARES */
+@media (100px <=width <=460px) {
+    .action_link_edit button.buy-btn {
+        width: 90%;
+    }
+
+    .grid-container-form {
+        grid-template-columns: auto;
+    }
+}
