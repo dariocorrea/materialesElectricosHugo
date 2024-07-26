@@ -4,6 +4,7 @@ const override = require('method-override')
 const rutas = require('./src/routes/mainRoutesProducto.js')
 const rutasAuth = require('./src/routes/mainRoutesProductoAuth.js')
 const login = require('./src/routes/loginRoutes.js')
+
 const path = require('path')
 //const rutasAdmin = require('./src/routes/adminRoutes.js')
 const app = express()

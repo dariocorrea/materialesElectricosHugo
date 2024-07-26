@@ -209,7 +209,11 @@
                             <div class="action_link_edit action_link_create">
                                 <button class="buy-btn" onclick="getCrearProducto()">Crear Producto<i class="fa fa-plus"></i></button>
                                 <a id="btnCrearModal" href="" data-toggle="modal" data-target="#quick_view_abm" hidden></a>
-                                <button class="buy-btn" onclick="cargarProductos()">Cargar Productos<i class="fa fa-table"></i></button>
+                                <button type="button" class="buy-btn" onclick="descargarProductos()">Descargar Productos<i class="fa fa-download"></i></button> 
+                                <a id="btnDescargar" href=""  hidden></a>
+                                <button class="buy-btn" onclick="cargarProductos()">Cargar Productos<i class="fa fa-upload"></i></button>
+                                <input type="file" id="cargarExcel" hidden/>
+                                
                             </div>
 
                             <div class="shop-product-wrap grid row" id="listado">
@@ -366,12 +370,10 @@
                         <h2 class="contac-1" id="tituloModal"></h2>
                         <div class="grid-container-form">
                             <div class="grid-item-form1">
-                                <!-- <div class="product-large-slider slick-arrow-style_2 mb-20"> -->
-                                    <div class="pro-large-img">
-                                        <img id="imagenActual" src="" alt="" />
-                                        <span id="nombreImagenActual" hidden></span>
-                                    </div>
-                                <!-- </div> -->
+                                <div class="pro-large-img">
+                                    <img id="imagenActual" src="" alt="" />
+                                    <span id="nombreImagenActual" hidden></span>
+                                </div>
                             </div>
                             <div class="grid-item-form2">
                                 <div class="contac-6">

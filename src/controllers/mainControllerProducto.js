@@ -96,6 +96,26 @@ module.exports = {
         }
     },
 
+    buscarProducto: async (req, res) => {
+        try {
+            const search = req.query.search
+            const idProducto = req.query.idProducto
+            const [productos] = await conn.query(`SELECT p.*
+                                                    FROM producto p 
+                                                   WHERE (p.NombreProducto = '${search}' 
+                                                      OR p.CodigoProducto = '${search}')
+                                                     AND IdProducto != ${idProducto}
+                                                   LIMIT 1`);
+
+            res.json(productos);
+
+        } catch (error) {
+            throw error;
+        } finally {
+            conn.releaseConnection();
+        }
+    },
+
     actualizarStock: async (req, res) => {
         try {
             console.log(req.body);

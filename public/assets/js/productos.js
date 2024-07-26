@@ -109,7 +109,7 @@ const getCrearProducto = async (idProducto) => {
 	titulo.textContent = "Crear Producto"
 
 	let myForm = document.getElementById("myForm")
-	myForm.setAttribute("onsubmit","crearProducto()")
+	myForm.setAttribute("onsubmit","crearProducto(); return false;")
 
 	let btnActualizar = document.getElementById("btnActualizar")
 	let btnCrear = document.getElementById("btnCrear")
@@ -121,6 +121,48 @@ const getCrearProducto = async (idProducto) => {
 
 	const btnCrearModal = document.getElementById("btnCrearModal")
 	btnCrearModal.click()
+}
+
+const verificarExisteProducto = async (nombre, codigo, idProducto) => {
+	const token = localStorage.getItem('jwt-token')
+
+	let data
+	let res
+	try {
+		res = await fetch(`/buscarProducto?search=${nombre}&idProducto=${idProducto}`, {
+				method: 'GET',
+				headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`
+				}
+		})
+		data = await res.json()
+
+		if (data.length > 0)
+		{
+			return "Ya existe el nombre del producto"
+		}
+
+		res = await fetch(`/buscarProducto?search=${codigo}&idProducto=${idProducto}`, {
+				method: 'GET',
+				headers: {
+				"Content-Type": "application/json",
+				"Authorization": `Bearer ${token}`
+				}
+		})
+
+		data = await res.json()
+
+		if (data.length > 0)
+		{
+			return "Ya existe el código del producto"
+		}
+
+		return ""
+	}
+	catch {
+		return "Error al buscar producto. Por favor, inténtalo de nuevo. 🔄"
+	}
 }
 
 const crearProducto = async () => {
@@ -139,57 +181,59 @@ const crearProducto = async () => {
         img = imagenNueva.value.substr(12);
     }
 
-	const body = JSON.stringify({
-		nombreProducto: nombreProducto.value,
-		codigoProducto: codigoProducto.value,
-		idCategoria: categoriaProducto.value,
-		idMarca: marcaProducto.value,
-		precioCompra: parseFloat(precioCompra.value),
-		precioVenta: parseFloat(precioVenta.value),
-		descripcionProducto: descripcionProducto.value,
-		imagen: img,
-		stock: parseInt(stockProducto.value)
-	});
+	const mensaje = await verificarExisteProducto(nombreProducto.value, codigoProducto.value, 0)
 
-	//Subo archivo al servidor si cargó la imagen
-	if (img != "") {
-		let fd = new FormData();
-		fd.append("imagen", document.getElementById("imagenNueva").files[0]);
-
-		const resArch =  await fetch(`/upload`, {
-			method: 'POST',
-			body: fd
-		})
-	}
-
-	const token = localStorage.getItem('jwt-token')
-
-	try{
-		const res =  await fetch(`/crearProducto`, {
-			method: 'POST',
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${token}`
-			},
-			body: body
-		})
-
-		alert("Producto creado exitosamente 🙌")
-	}
-	catch
+	if (mensaje)
 	{
-		alert("Error al crear el producto. Por favor, inténtalo de nuevo. 🔄")
+		alert(mensaje)
 	}
+	else {
+		const body = JSON.stringify({
+			nombreProducto: nombreProducto.value,
+			codigoProducto: codigoProducto.value,
+			idCategoria: categoriaProducto.value,
+			idMarca: marcaProducto.value,
+			precioCompra: parseFloat(precioCompra.value),
+			precioVenta: parseFloat(precioVenta.value),
+			descripcionProducto: descripcionProducto.value,
+			imagen: img,
+			stock: parseInt(stockProducto.value)
+		});
 
-	// if (!res.ok) {
-    //     alert("Error al crear el producto. Por favor, inténtalo de nuevo. 🔄")
-    //     throw Error("Error al crear el producto. Por favor, inténtalo de nuevo. 🔄")
-    // }
+		//Subo archivo al servidor si cargó la imagen
+		if (img != "") {
+			let fd = new FormData();
+			fd.append("archivo", document.getElementById("imagenNueva").files[0]);
 
-	const btnClose = document.getElementById("modalClose")
-	btnClose.click()
+			const resArch =  await fetch(`/upload`, {
+				method: 'POST',
+				body: fd
+			})
+		}
 
-	window.location.href = "/productos.html"
+		const token = localStorage.getItem('jwt-token')
+
+		try {
+			const res =  await fetch(`/crearProducto`, {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+				body: body
+			})
+
+			alert("Producto creado exitosamente 🙌")
+		}
+		catch {
+			alert("Error al crear el producto. Por favor, inténtalo de nuevo. 🔄")
+		}
+
+		const btnClose = document.getElementById("modalClose")
+		btnClose.click()
+
+		window.location.href = "/productos.html"
+	}
 }
 
 const getEditarProducto = async (idProducto) => {
@@ -212,7 +256,7 @@ const getEditarProducto = async (idProducto) => {
 	btnCrear.setAttribute("hidden", true)
 
 	let myForm = document.getElementById("myForm")
-	myForm.setAttribute("onsubmit","actualizarProducto()")
+	myForm.setAttribute("onsubmit","actualizarProducto(); return false;")
 
 	const lProductos = await buscarProducto(idProducto)
 	const producto = lProductos[0]
@@ -249,56 +293,65 @@ const actualizarProducto = async () => {
 	let stockProducto = document.getElementById("stock")
 
 	let img = ""
-    if (imagenNueva.value.includes("fakepath")) {
-        img = imagenNueva.value.substr(12);
-    }
-
-	const imagen = img == "" ? nombreImagen.textContent : img
-
-	const body = JSON.stringify({
-		idProducto: parseInt(idProd.textContent),
-		nombreProducto: nombreProducto.value,
-		codigoProducto: codigoProducto.value,
-		idCategoria: categoriaProducto.value,
-		idMarca: marcaProducto.value,
-		precioCompra: parseFloat(precioCompra.value),
-		precioVenta: parseFloat(precioVenta.value),
-		descripcionProducto: descripcionProducto.value,
-		imagen,
-		stock: parseInt(stockProducto.value)
-	});
-
-	const token = localStorage.getItem('jwt-token')
-
-	const res =  await fetch(`/actualizarProducto?_metodo=PUT`, {
-		method: 'POST',
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": `Bearer ${token}`
-		},
-		body: body
-	})
-
-	if (!res.ok) {
-        alert("Error al actualizar el producto. Por favor, inténtalo de nuevo. 🔄")
-        throw Error("Error al actualizar el producto. Por favor, inténtalo de nuevo. 🔄")
-    }
-
-	//Subo archivo al servidor si cambió la imagen
-	if (img != "" && nombreImagen.textContent != img) {
-		let fd = new FormData();
-		fd.append("imagen", document.getElementById("imagenNueva").files[0]);
-
-		const resArch =  await fetch(`/upload`, {
-			method: 'POST',
-			body:  fd
-		})
+	if (imagenNueva.value.includes("fakepath")) {
+		img = imagenNueva.value.substr(12);
 	}
-    alert("Producto actualizado exitosamente 🙌")
-	const btnClose = document.getElementById("modalClose")
-	btnClose.click()
 
-	window.location.href = "/productos.html"
+	const mensaje = await verificarExisteProducto(nombreProducto.value, codigoProducto.value, idProd.textContent)
+
+	if (mensaje)
+	{
+		alert(mensaje)
+	}
+	else {
+		const imagen = img == "" ? nombreImagen.textContent : img
+
+		const body = JSON.stringify({
+			idProducto: parseInt(idProd.textContent),
+			nombreProducto: nombreProducto.value,
+			codigoProducto: codigoProducto.value,
+			idCategoria: categoriaProducto.value,
+			idMarca: marcaProducto.value,
+			precioCompra: parseFloat(precioCompra.value),
+			precioVenta: parseFloat(precioVenta.value),
+			descripcionProducto: descripcionProducto.value,
+			imagen,
+			stock: parseInt(stockProducto.value)
+		});
+
+		//Subo archivo al servidor si cambió la imagen
+		if (img != "" && nombreImagen.textContent != img) {
+			let fd = new FormData();
+			fd.append("archivo", document.getElementById("imagenNueva").files[0]);
+
+			const resArch =  await fetch(`/upload`, {
+				method: 'POST',
+				body:  fd
+			})
+		}
+
+		const token = localStorage.getItem('jwt-token')
+
+		try {
+			const res =  await fetch(`/actualizarProducto?_metodo=PUT`, {
+				method: 'POST',
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+				body: body
+			})
+		}
+		catch {
+			alert("Error al actualizar el producto. Por favor, inténtalo de nuevo. 🔄")
+		}
+
+		alert("Producto actualizado exitosamente 🙌")
+		const btnClose = document.getElementById("modalClose")
+		btnClose.click()
+
+		window.location.href = "/productos.html"
+	}
 }
 
 const eliminarProducto = async (idProducto) => {
@@ -329,12 +382,64 @@ const eliminarProducto = async (idProducto) => {
         window.location.href = "/productos.html"
     }
 }
- 
-
-listadoProductos(null, 0, true)
 
 const busquedaPorNombreABM = async () => {
 	let search = document.getElementById("search")
-	//window.location.href = `/productos.html?search=${search.value}`
+
 	listadoProductos(search.value, 0, true)
 }
+
+const cargarArchivo = async () => {
+	const token = localStorage.getItem('jwt-token')
+
+	const archivo =  document.getElementById("cargarExcel").files[0]
+	let fd = new FormData()
+	fd.append("archivo", archivo)
+
+	const resArch =  await fetch(`/upload`, {
+		method: 'POST',
+		body:  fd
+	})
+
+	const res = await fetch(`/cargarExcel?archivo=${archivo.name}`, {
+		method: 'GET',
+		headers: {
+		  "Content-Type": "application/json",
+		  "Authorization": `Bearer ${token}` 
+		}
+	})
+
+	alert("Archivo importado existosamente 🙌")
+
+	window.location.href = "productos.html"
+	
+}
+
+const cargarProductos = async () => {
+	let cargarExcel = document.getElementById("cargarExcel")
+	cargarExcel.addEventListener("change", cargarArchivo)
+	cargarExcel.click()
+}
+
+const descargarProductos = async () => {
+	const token = localStorage.getItem('jwt-token')
+
+	const res = await fetch(`/descargarExcel`, {
+		method: 'GET',
+		headers: {
+		  "Content-Type": "application/json",
+		  "Authorization": `Bearer ${token}` 
+		}
+	  })
+
+	let archivo = await res.json()
+
+	let link = document.getElementById("btnDescargar")
+	link.download = "ListaMateriales.xlsx"
+	link.href = `./assets/uploads/${archivo}`
+	link.click()
+
+	window.location.href = "productos.html"
+}
+
+listadoProductos(null, 0, true)
