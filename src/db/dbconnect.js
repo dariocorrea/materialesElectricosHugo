@@ -1,10 +1,10 @@
 const mysql = require('mysql2')
 
 const pool = mysql.createPool({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'materiales_electricos',
+	host: 'mysql-darioakd.alwaysdata.net',
+	user: 'darioakd',
+	password: 'vetbiDl8]HcY4Sbh',
+	database: 'darioakd_matelectricos',
 	port: 3306,
 	waitForConnections: true,
 	connectionLimit: 10,

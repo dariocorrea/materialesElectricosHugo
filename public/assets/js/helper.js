@@ -488,6 +488,27 @@ const ordenarListaProductos = async (e, esABMproductos) => {
 	}
 }
 
+const logout = async () => {
+    localStorage.removeItem("jwt-token")
+	localStorage.removeItem("idRol")
+	localStorage.removeItem("usuario")
+
+    window.location.href = "/login.html"
+}
+
+const verificarToken = async () => {
+    const token = localStorage.getItem('jwt-token')
+
+    const res = await fetch(`/login/verificarToken/${token}`)
+
+    if (!res.ok) {
+        window.location.href = "/login.html"
+        throw Error("Problemas en login")
+    }
+}
+
+verificarToken()
+
 //solo se llama desde index.html
 const pathActual = window.location.pathname;
 
@@ -499,3 +520,7 @@ else if (pathActual.includes('/productos.html')){
 	const ordenar = document.getElementById("sortbyABM")
 	ordenar.addEventListener("change", ordenarListaABMProductos)
 }
+
+const usuario = localStorage.getItem('usuario')
+const usuarioLogueado = document.getElementById("usuarioLogueado")
+usuarioLogueado.textContent = usuario

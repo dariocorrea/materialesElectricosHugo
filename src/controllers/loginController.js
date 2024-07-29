@@ -1,38 +1,35 @@
 const { conn } = require('../db/dbconnect')
-//const jtoken = require('jsonwebtoken')
-//const crypt = require('bcryptjs')
-//const jwtconfig = require('./../config/jwtconfig.js')
+const jtoken = require('jsonwebtoken')
+const crypt = require('bcryptjs')
+const jwtconfig = require('./../config/jwtconfig.js')
 
 module.exports = {
 	registro: async (req, res) => {
-
-		const { user, password, nombrecompleto, email, idRol } = req.body
-
-		const [[valido]] = await conn.query(`SELECT * FROM usuarios WHERE username = ?`, user)
+		const { nombreUsuario, password, nombrecompleto, email, idRol } = req.body
+		const [[valido]] = await conn.query(`SELECT * FROM usuario WHERE NombreUsuario = ?`, nombreUsuario)
 
 		if (valido !== undefined) {
 
 			res.status(404).send('Ya existe Usuario')
 		} else {
 			const passEncriptada = await crypt.hash(password, 5)
-			const [creado] = await conn.query(`INSERT INTO usuarios (username, password, nombre_completo, email, id_rol) VALUES (?, ?, ?, ?, ?);`, [user, passEncriptada, nombrecompleto, email, idRol])
+			const [creado] = await conn.query(`INSERT INTO usuario (NombreUsuario, Password, NombreCompleto, Email, IdRol)
+				                               VALUES (?, ?, ?, ?, ?);`, [nombreUsuario, passEncriptada, nombrecompleto, email, idRol])
 			res.redirect('/login.html')
 		}
 	},
 
 	login: async (req, res) => {
-
-		const { user, password } = req.body
-		const [[valido]] = await conn.query(`SELECT * FROM usuarios WHERE username = ?`, user)
+		const { nombreUsuario, password } = req.body
+		const [[valido]] = await conn.query(`SELECT * FROM usuario WHERE NombreUsuario = ?`, nombreUsuario)
 
 		if (valido === undefined) {
 			res.status(404).send('Usuario no encontrado')
-		} else if (!(await crypt.compare(password, valido.password))) {
+		} else if (!(await crypt.compare(password, valido.Password))) {
 			res.status(401).send({ auth: false, token: null })
 		} else {
-			token = jtoken.sign({ id: valido.id }, jwtconfig.secretKey, { expiresIn: jwtconfig.tokenExpiresIn })
-			res.status(201).send({ auth: true, token, idRol: valido.id_rol })
-
+			token = jtoken.sign({ id: valido.IdUsuario }, jwtconfig.secretKey, { expiresIn: jwtconfig.tokenExpiresIn })
+			res.status(200).send({ auth: true, token, idRol: valido.IdRol })
 		}
 	},
 
@@ -42,9 +39,8 @@ module.exports = {
 
 	verificarToken: async (req, res) => {
 		try {
-
 			const token = req.params.token
-			//const valido = jtoken.verify(token, jwtconfig.secretKey)
+			const valido = jtoken.verify(token, jwtconfig.secretKey)
 
 			res.status(200).send({ auth: true })
 		} catch (error) {

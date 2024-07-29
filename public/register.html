@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Materiales Eléctricos HUGO</title>
-  <link rel="stylesheet" href="css/login.css">
-  <link rel="icon" href="img/ico/matElec.ico">
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="icon" href="assets/img/ico/matElec.ico">
 </head>
 <body>
   <div class="wrapper">
-    <form action="#">
+    <form onsubmit="registracion(); return false;">
       <h2>Registrarse</h2>
-        <div class="input-field">
+      <div class="input-field">
         <input type="text" required id="usuario" name="usuario">
         <label>Ingrese usuario...</label>
       </div>
@@ -19,19 +19,22 @@
         <input type="password" required id="password" name="password">
         <label>Ingrese password...</label>
       </div>
-	  <div class="input-field">
+	    <div class="input-field">
         <input type="text" required id="nombrecompleto" name="nombrecompleto">
         <label>Ingrese nombre y apellido...</label>
       </div>
-	  <div class="input-field">
-        <input type="text" required id="email" name="email">
+	    <div class="input-field">
+        <input type="email" id="email" name="email">
         <label>Ingrese email...</label>
       </div>
+      <input type="hidden" name="idRol" value="1">
       <button type="submit">Registrarse</button>
       <div class="register">
         <p>Ya tiene cuenta? <a href="login.html">Login</a></p>
       </div>
     </form>
   </div>
+
+  <script src="assets/js/login.js"></script>
 </body>
 </html>

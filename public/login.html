@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Materiales Eléctricos HUGO</title>
-  <link rel="stylesheet" href="css/login.css">
-  <link rel="icon" href="img/ico/matElec.ico">
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="icon" href="assets/img/ico/matElec.ico">
 </head>
 <body>
   <div class="wrapper">
-    <form action="#">
+    <form onsubmit="login(); return false;">
       <h2>Login</h2>
         <div class="input-field">
         <input type="text" required id="usuario" name="usuario">
@@ -25,5 +25,7 @@
       </div>
     </form>
   </div>
+
+  <script src="assets/js/login.js"></script>
 </body>
 </html>

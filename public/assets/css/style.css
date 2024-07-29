@@ -791,7 +791,6 @@ body.modal-open {
 .header-top-area .header-top-right ul li a {
     color: #444444;
     font-size: 12px;
-    text-transform: capitalize;
 }
 
 .header-top-area .header-top-right ul li a:hover {

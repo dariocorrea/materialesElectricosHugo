@@ -4,7 +4,7 @@ module.exports = {
     getListaProductos: async (req, res) => {
         try {
             const idCategoria = req.params.id
-            console.log(idCategoria) 
+            //console.log(idCategoria) 
             const [productos] = await conn.query(`SELECT p.*, c.NombreCategoria, m.NombreMarca 
                                                     FROM producto p 
                                                     JOIN categoriaproducto c 
@@ -57,7 +57,7 @@ module.exports = {
     getDetalleProducto: async (req, res) => {
         try {
             const idProducto = req.params.id
-            console.log(idProducto) 
+            //console.log(idProducto) 
             const [productos] = await conn.query(`SELECT p.*, c.NombreCategoria, m.NombreMarca 
                                                     FROM producto p 
                                                     JOIN categoriaproducto c 
@@ -118,12 +118,12 @@ module.exports = {
 
     actualizarStock: async (req, res) => {
         try {
-            console.log(req.body);
+            //console.log(req.body);
             const sql = `UPDATE producto SET Stock=? WHERE IdProducto=?`;
             const { idProducto, stockNuevo} = req.body;
 
             const modificado = await conn.query(sql, [stockNuevo, idProducto]);
-            console.log('Stock actualizado exitosamente');
+            //console.log('Stock actualizado exitosamente');
 
             res.status(200)
         } catch (error) {
@@ -175,21 +175,6 @@ module.exports = {
         } catch (error) {
             console.error('Error al crear el producto:', error);
             res.status(500).send({ message: "Error al crear el producto. Por favor, inténtalo de nuevo." })
-        }
-    },
-
-    crearRegistro: async (req, res) => {
-        try {
-            console.log(req.body);
-            const sql = `INSERT INTO producto (nombre, caracteristicas, imagen, precio, gramaje, variedad_id) VALUES (?,?,?,?,?,?);`;
-            const creado = await conn.query(sql, [req.body.nombre, req.body.caracteristicas, req.body.imagen, parseFloat(req.body.precio), req.body.gramaje, req.body.variedad_id]);
-            console.log('Producto creado exitosamente');
-            res.redirect('/producto');
-        } catch (error) {
-            console.error('Error al crear el producto:', error);
-            res.status(500).send({ message: "Error al crear el producto. Por favor, inténtalo de nuevo." })
-
-            //res.send('Error al crear el producto. Por favor, inténtalo de nuevo.');
         }
     }
 }
