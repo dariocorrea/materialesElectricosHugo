@@ -7660,4 +7660,8 @@ body.image-bg .wrapper {
     .product-details-edit .action_link_edit a.buy-btn {
         margin-top: 30px
     }
+
+    .modal-content {
+        width: auto;
+    }
 }
