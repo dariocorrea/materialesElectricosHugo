@@ -83,8 +83,7 @@ const actualizarStock = async (productos) => {
 
 }
 
-const imprimirCarrito = async (e) => {
-	
+const imprimirCarrito = async (e) => {	
 	const esPresupuesto = document.querySelector('input[name="presupuesto"]:checked')
 
 	if (!esPresupuesto){
@@ -92,6 +91,7 @@ const imprimirCarrito = async (e) => {
 		alert("Seleccione si es presupuesto")
 	}
 	else {
+		e.target.href = `imprimir.html?esPresupuesto=${esPresupuesto.value}`
 		if (esPresupuesto.value == "NO") {
 			let productos = JSON.parse(localStorage.getItem("productos")) || []
 			//Actualizar stock solo si no es presupuesto

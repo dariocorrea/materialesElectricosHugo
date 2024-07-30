@@ -492,6 +492,7 @@ const logout = async () => {
     localStorage.removeItem("jwt-token")
 	localStorage.removeItem("idRol")
 	localStorage.removeItem("usuario")
+	localStorage.removeItem("productos")
 
     window.location.href = "/login.html"
 }
